@@ -1,0 +1,47 @@
+rest:
+  build: .
+
+  hostname: "dev"
+
+  ports:
+    - "8080:8080"
+
+  volumes:
+    - .:/home/huxley/huxley-rest
+
+  links:
+    - mysql
+    - rabbit
+    - redis
+
+  tty: true
+
+  stdin_open: true
+
+mysql:
+  image: mysql
+
+  environment:
+    - MYSQL_ROOT_PASSWORD=
+    - MYSQL_DATABASE=huxley-dev
+    - MYSQL_USER=huxley
+    - MYSQL_PASSWORD=
+
+  volumes:
+    - ../misc/mysql/data:/var/lib/mysql
+    - ../misc/mysql/conf.d:/etc/mysql/conf.d
+
+rabbit:
+  image: rabbitmq
+
+  environment:
+    - RABBITMQ_NODENAME=rabbit
+
+  volumes:
+    - ../misc/rabbitmq/data:/var/lib/rabbitmq
+
+redis:
+ image: redis
+
+ volumes:
+   - ../misc/redis/data:/data
